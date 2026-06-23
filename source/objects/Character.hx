@@ -114,6 +114,13 @@ class Character extends FlxSprite
 				noAntialiasing = true;
 				antialiasing = false;
 				hasMissAnimations = true;
+			case 'jolteon':
+				healthIcon = 'jolteon-pixel';
+				healthColorArray = [249, 215, 118];
+				singDuration = 4;
+				noAntialiasing = true;
+				antialiasing = false;
+				hasMissAnimations = true;
 			case 'none', 'nothing', 'empty', 'invisible':
 				visible = false;
 				healthIcon = 'face';
@@ -462,6 +469,7 @@ class Character extends FlxSprite
 	}
 
 	@:allow(objects.FlareonCharacter)
+	@:allow(objects.JolteonCharacter)
 	var _lastPlayedAnimation:String;
 	inline public function getAnimationName():String
 	{
