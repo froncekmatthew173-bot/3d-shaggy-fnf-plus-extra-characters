@@ -462,6 +462,7 @@ class Character extends FlxSprite
 	}
 
 	@:allow(objects.FlareonCharacter)
+	@:allow(objects.JolteonCharacter)
 	var _lastPlayedAnimation:String;
 	inline public function getAnimationName():String
 	{
