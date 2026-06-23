@@ -115,7 +115,7 @@ class StrumNote extends FlxSprite
 			antialiasing = Note.is3DNoteTexture(texture) ? false : ClientPrefs.data.antialiasing;
 			if(Note.is3DNoteTexture(texture))
 			{
-				useRGBShader = false;
+				useRGBShader = true;
 				rgbShader.enabled = false;
 			}
 			setGraphicSize(Std.int(width * Note.getKeyScale(keyCount)));
