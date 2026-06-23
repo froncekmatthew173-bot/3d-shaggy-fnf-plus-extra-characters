@@ -179,7 +179,7 @@ class Note extends FlxSprite
 	{
 		if(is3DNoteTexture(loadedTexture) || (PlayState.SONG != null && is3DNoteTexture(PlayState.SONG.arrowSkin)))
 		{
-			rgbShader.enabled = false;
+			rgbShader.enabled = true;
 			noteSplashData.useRGBShader = false;
 			return;
 		}
@@ -408,7 +408,7 @@ class Note extends FlxSprite
 		loadedTexture = skin;
 		if(is3DNoteTexture(loadedTexture))
 		{
-			rgbShader.enabled = false;
+			rgbShader.enabled = true;
 			noteSplashData.useRGBShader = false;
 		}
 
