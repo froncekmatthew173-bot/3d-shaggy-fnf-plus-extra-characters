@@ -10,7 +10,7 @@ class CharacterFactory
 			case 'flareon' | 'flareon-png' | 'flareon-rig':
 				new FlareonCharacter(x, y, characterId, isPlayer);
 			case 'jolteon' | 'jolteon-pixel' | 'jolteon-rig':
-				new JolteonCharacter(x, y, characterId, isPlayer)
+				new JolteonCharacter(x, y, characterId, isPlayer);
 			default:
 				new Character(x, y, characterId, isPlayer);
 		}
