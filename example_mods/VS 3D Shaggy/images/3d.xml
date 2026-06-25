@@ -308,4 +308,6 @@
 	<SubTexture name="I hold end0000" x="1926" y="204" width="66" height="72" />
 	<SubTexture name="alt A hold0000" x="1018" y="759" width="66" height="44" />
 	<SubTexture name="alt A tail0000" x="1194" y="824" width="66" height="72" />
+	<SubTexture name="alt A hold0000" x="1018" y="759" width="66" height="44" />
+	<SubTexture name="alt A tail0000" x="1194" y="824" width="66" height="72" />
 </TextureAtlas>
