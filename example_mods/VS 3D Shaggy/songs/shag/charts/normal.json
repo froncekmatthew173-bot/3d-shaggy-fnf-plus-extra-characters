@@ -24953,6 +24953,7 @@
 			]
 		}
 	],
+	"disableNoteRGB": false,
 	"codenameChart": true,
 	"scrollSpeed": 2.2,
 	"chartVersion": "1.6.0",
