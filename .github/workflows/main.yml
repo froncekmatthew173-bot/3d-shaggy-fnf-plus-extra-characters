@@ -126,7 +126,7 @@ jobs:
           haxelib install hxcpp > /dev/null --quiet
           chmod +x ./setup/unix.sh
           sh ./setup/unix.sh
-          haxelib git extension-androidtools https://github.com/LimeExtensions/extension-androidtools.git
+          haxelib install extension-androidtools
           haxelib git extension-videoview https://github.com/Joalor64/extension-videoview.git
 
       - name: Install Android NDK
