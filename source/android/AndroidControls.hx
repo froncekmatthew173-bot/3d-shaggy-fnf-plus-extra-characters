@@ -5,15 +5,15 @@ import flixel.group.FlxSpriteGroup;
 import flixel.util.FlxSave;
 import flixel.math.FlxPoint;
 
-import android.flixel.FlxVirtualPad;
-import android.flixel.FlxHitbox;
+import android.FlxVirtualPad;
+import android.FlxHitbox;
 
 class Config {
 	var save:FlxSave;
 
 	public function new() {
 		save = new FlxSave();
-		save.bind('saved-controls');
+		save.bind("saved-controls");
 	}
 
 	public function getcontrolmode():Int {
@@ -63,6 +63,7 @@ class AndroidControls extends FlxSpriteGroup {
 	public var mode:ControlsGroup = HITBOX;
 
 	public var hbox:FlxHitbox;
+	public var newhbox:FlxNewHitbox;
 	public var vpad:FlxVirtualPad;
 
 	var config:Config;
@@ -84,34 +85,39 @@ class AndroidControls extends FlxSpriteGroup {
 			case DUO:
 				initControler(3);
 			case HITBOX:
+		    if(ClientPrefs.hitboxmode != true){
 				initControler(4);
+		    }else{
+		    initControler(5);
+		    }
 			case KEYBOARD:// nothing
-				initControler(5);
 		}
 	}
 
 	function initControler(vpadMode:Int) {
 		switch (vpadMode){
 			case 0:
-				vpad = new FlxVirtualPad(RIGHT_FULL, NONE);	
+				vpad = new FlxVirtualPad(RIGHT_FULL, NONE, 0.75, ClientPrefs.globalAntialiasing);	
 				add(vpad);						
 			case 1:
-				vpad = new FlxVirtualPad(FULL, NONE);
+				vpad = new FlxVirtualPad(FULL, NONE, 0.75, ClientPrefs.globalAntialiasing);
 				add(vpad);			
 			case 2:
-				vpad = new FlxVirtualPad(FULL, NONE);
+				vpad = new FlxVirtualPad(FULL, NONE, 0.75, ClientPrefs.globalAntialiasing);
 				vpad = config.loadcustom(vpad);
 				add(vpad);	
 			case 3:
-				vpad = new FlxVirtualPad(DUO, NONE);
+				vpad = new FlxVirtualPad(DUO, NONE, 0.75, ClientPrefs.globalAntialiasing);
 				add(vpad);		
 			case 4:
-				hbox = new FlxHitbox();
-				add(hbox);		
+				hbox = new FlxHitbox(0.75, ClientPrefs.globalAntialiasing);
+				add(hbox);
 			case 5:
-				//nothing
+			  newhbox = new FlxNewHitbox();
+			  add(newhbox);
 			default:
-				//nothing
+				vpad = new FlxVirtualPad(RIGHT_FULL, NONE, 0.75, ClientPrefs.globalAntialiasing);	
+				add(vpad);					
 		}
 	}
 
