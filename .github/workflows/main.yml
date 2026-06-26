@@ -137,13 +137,22 @@ jobs:
           haxelib git extension-androidtools https://github.com/LimeExtensions/extension-androidtools.git
           haxelib git extension-videoview https://github.com/Joalor64/extension-videoview.git
 
+      - name: Install Android NDK
+        run: |
+          sudo apt-get install -y unzip wget
+          wget -q https://dl.google.com/android/repository/android-ndk-r27d-linux.zip
+          unzip -q android-ndk-r27d-linux.zip
+
+      - name: Export Android Paths
+        run: |
+          echo "ANDROID_SDK=$ANDROID_HOME" >> $GITHUB_ENV
+          echo "ANDROID_NDK_ROOT=$GITHUB_WORKSPACE/android-ndk-r27d" >> $GITHUB_ENV
+
       - name: Setup Lime
         run: |
           haxelib run lime setup android
-          echo "y" | haxelib run lime config android $GITHUB_WORKSPACE/android-ndk-r27d
-
-      - name: Skip SScript setup mode
-        run: echo 'oy9:showMacroty8:loopCosti25y10:includeAllfg' >> ~/settings.cocoa
+          haxelib run lime config ANDROID_SDK $ANDROID_HOME
+          haxelib run lime config ANDROID_NDK_ROOT $GITHUB_WORKSPACE/android-ndk-r27d
 
       - name: Create Version Tag
         run: echo "${{ github.run_id }}" > VERSION
