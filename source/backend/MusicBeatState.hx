@@ -2,8 +2,10 @@ package backend;
 
 import flixel.FlxState;
 import backend.PsychCamera;
+#if mobile
 import android.flixel.FlxVirtualPad;
-
+#end
+	
 class MusicBeatState extends FlxState
 {
 	private var curSection:Int = 0;
