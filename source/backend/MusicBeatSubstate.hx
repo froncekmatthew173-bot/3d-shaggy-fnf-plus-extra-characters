@@ -4,9 +4,31 @@ import flixel.FlxSubState;
 
 class MusicBeatSubstate extends FlxSubState
 {
+	#if mobile
+	public var mobileControls:MobileControls;
+	public static var checkHitbox:Bool = false;
+	public static var checkDUO:Bool = false;
+	public static var _virtualpad:FlxVirtualPad;
+	public static var androidc:MobileControls;
+	#end
+
 	public function new()
 	{
 		super();
+	}
+
+	override function destroy()
+	{
+		super.destroy();
+
+		#if mobile
+		if (mobileControls != null)
+		{
+			mobileControls.kill();
+			mobileControls.destroy();
+			mobileControls = null;
+		}
+		#end
 	}
 
 	private var curSection:Int = 0;

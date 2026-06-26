@@ -7,9 +7,9 @@ name: Build
 on:
   # Triggers the workflow on push or pull request events but only for the master branch
   push:
-    branches: [ main, experimental, lol ]
+    branches: [ experimental, lol ]
   pull_request:
-    branches: [ main, experimental, lol ]
+    branches: [ experimental, lol ]
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -106,3 +106,102 @@ jobs:
         with:
           name: macBuild
           path: export/release/macos/bin
+  buildAndroid:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4.1.7
+
+      - uses: krdlab/setup-haxe@master
+        with:
+          haxe-version: 4.3.4
+
+      - name: Setup Java JDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '21'
+
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Install Android NDK
+        run: |
+          sudo apt-get install -y unzip wget
+          wget -q https://dl.google.com/android/repository/android-ndk-r27d-linux.zip
+          unzip -q android-ndk-r27d-linux.zip
+          echo "ANDROID_NDK_HOME=$GITHUB_WORKSPACE/android-ndk-r27d" >> $GITHUB_ENV
+          echo "$GITHUB_WORKSPACE/android-ndk-r27d" >> $GITHUB_PATH
+
+      - name: Install Haxelib
+        run: |
+          haxelib setup ~/haxelib
+          haxelib install hxcpp > /dev/null --quiet
+          chmod +x ./setup/unix.sh
+          sh ./setup/unix.sh
+          haxelib git extension-androidtools https://github.com/jigsaw-4277821/extension-androidtools.git
+          haxelib git extension-videoview https://github.com/jigsaw-4277821/extension-videoview.git
+          haxelib remove linc_luajit
+          haxelib git linc_luajit https://github.com/jigsaw-4277821/linc_luajit.git
+
+      - name: Setup Lime
+        run: |
+          haxelib run lime setup android
+          echo "y" | haxelib run lime config android $GITHUB_WORKSPACE/android-ndk-r27d
+
+      - name: Skip SScript setup mode
+        run: echo 'oy9:showMacroty8:loopCosti25y10:includeAllfg' >> ~/settings.cocoa
+
+      - name: Create Version Tag
+        run: echo "${{github.run_id}}" > VERSION
+
+      - name: Compile Android
+        run: haxelib run lime build android -final --app-version="4.0.0-${{ github.run_id}}" -D officialBuild
+
+      - name: Publish Artifact
+        uses: actions/upload-artifact@v4.3.4
+        with:
+          name: androidBuild
+          path: export/release/android/bin/app/build/outputs/apk/debug
+  buildIOS:
+    runs-on: macos-15
+
+    steps:
+      - uses: actions/checkout@v4.1.7
+
+      - uses: krdlab/setup-haxe@master
+        with:
+          haxe-version: 4.3.4
+
+      - name: Install Haxelib
+        run: |
+          haxelib setup ~/haxelib
+          haxelib install hxcpp > /dev/null --quiet
+          chmod +x ./setup/unix.sh
+          sh ./setup/unix.sh
+          haxelib git extension-videoview https://github.com/jigsaw-4277821/extension-videoview.git
+          haxelib remove linc_luajit
+          haxelib git linc_luajit https://github.com/jigsaw-4277821/linc_luajit.git
+
+      - name: Skip SScript setup mode
+        run: echo 'oy9:showMacroty8:loopCosti25y10:includeAllfg' >> ~/settings.cocoa
+
+      - name: Create Version Tag
+        run: echo "${{github.run_id}}" > VERSION
+
+      - name: Compile iOS
+        run: haxelib run lime build ios -final --app-version="4.0.0-${{ github.run_id}}" -D officialBuild
+
+      - name: Package IPA
+        run: |
+          cd export/release/ios
+          mkdir -p Payload
+          cp -r bin/Release-iphoneos/*.app Payload/
+          zip -r ../../FNF-PsychEngine.ipa Payload
+          cd ../../..
+
+      - name: Publish Artifact
+        uses: actions/upload-artifact@v4.3.4
+        with:
+          name: iosBuild
+          path: export/FNF-PsychEngine.ipa

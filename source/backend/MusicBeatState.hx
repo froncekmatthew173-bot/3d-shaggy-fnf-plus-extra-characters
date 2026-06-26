@@ -19,11 +19,63 @@ class MusicBeatState extends FlxState
 		return Controls.instance;
 	}
 
+	#if mobile
+	public var mobileControls:MobileControls;
+	public var camControls:FlxCamera;
+
+	public function addMobileControls(DefaultDrawTarget:Bool = true):Void
+	{
+		mobileControls = new MobileControls();
+
+		camControls = new FlxCamera();
+		camControls.bgColor.alpha = 0;
+		FlxG.cameras.add(camControls, DefaultDrawTarget);
+
+		mobileControls.cameras = [camControls];
+		mobileControls.visible = false;
+		mobileControls.alpha = ClientPrefs.data.controlsAlpha;
+		add(mobileControls);
+	}
+
+	public function removeMobileControls()
+	{
+		if (mobileControls != null)
+			remove(mobileControls);
+	}
+	#end
+
 	var _psychCameraInitialized:Bool = false;
 
 	public var variables:Map<String, Dynamic> = new Map<String, Dynamic>();
 	public static function getVariables()
 		return getState().variables;
+
+	#if mobile
+	public static var checkHitbox:Bool = false;
+	public static var checkDUO:Bool = false;
+	public static var _virtualpad:FlxVirtualPad;
+	public static var androidc:MobileControls;
+	#end
+
+	override function destroy()
+	{
+		super.destroy();
+
+		#if mobile
+		if (mobileControls != null)
+		{
+			mobileControls.kill();
+			mobileControls.destroy();
+			mobileControls = null;
+		}
+		if (_virtualpad != null)
+		{
+			_virtualpad.kill();
+			_virtualpad.destroy();
+			_virtualpad = null;
+		}
+		#end
+	}
 
 	override function create() {
 		var skip:Bool = FlxTransitionableState.skipNextTransOut;

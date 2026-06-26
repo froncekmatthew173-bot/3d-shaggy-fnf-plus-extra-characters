@@ -81,6 +81,9 @@ import states.TitleState;
 	public var discordRPC:Bool = true;
 	public var loadingScreen:Bool = true;
 	public var language:String = 'en-US';
+	public var controlsAlpha:Float = #if mobile 0.6 #else 0.001 #end;
+	public var mobileControlsType:String = 'hitbox'; // hitbox, dpad, none
+	public var spaceExtend:Bool = false;
 }
 
 class ClientPrefs {
