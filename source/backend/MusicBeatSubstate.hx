@@ -8,7 +8,7 @@ class MusicBeatSubstate extends FlxSubState
 	public var mobileControls:MobileControls;
 	public static var checkHitbox:Bool = false;
 	public static var checkDUO:Bool = false;
-	public static var _virtualpad:FlxVirtualPad;
+	public static var _virtualpad:mobile.objects.MobileControls;
 	public static var androidc:MobileControls;
 	#end
 

@@ -1,6 +1,15 @@
-name: Main
+# This is a basic workflow to help you get started with Actions
 
-on: workflow_dispatch
+name: Build
+
+
+# Controls when the action will run.
+on:
+  # Triggers the workflow on push or pull request events but only for the master branch
+  push:
+    branches: [ experimental, main, lol ]
+  pull_request:
+    branches: [ experimental, main, lol ]
 
 jobs:
   Build:
@@ -32,12 +41,6 @@ jobs:
             buildArgs: "mac -arm64 -D HXCPP_ARM64"
             artifactName: macOSBuild-arm64
             artifactPath: export/release/macos/bin/*
-          - name: Android
-            os: macos-15
-            buildArgs: "android -ONLY_ARMV7"
-            setupCommand: sh ./setup/unix.sh
-            artifactName: androidBuild
-            artifactPath: "export/release/android/bin/app/build/outputs/apk/release/*.apk"
           - name: iOS
             os: macos-15
             buildArgs: "ios -nosign"
