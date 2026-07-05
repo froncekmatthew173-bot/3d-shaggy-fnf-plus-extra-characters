@@ -17,6 +17,9 @@ class FlashingState extends MusicBeatState
 	{
 		super.create();
 
+		addTouchPad("LEFT_RIGHT", "A_B");
+		addTouchPadCamera();
+
 		final enter:String = (controls.mobileC) ? 'A' : 'ENTER';
 		final back:String = (controls.mobileC) ? 'B' : 'BACK';
 
@@ -82,10 +85,10 @@ class FlashingState extends MusicBeatState
 				});
 			} else {
 				FlxG.sound.play(Paths.sound('cancelMenu'));
-			FlxTween.tween(texts, {alpha: 0}, 1, {
-				onComplete: (_) -> MusicBeatState.switchState(new TitleState())
-			});
-			if (touchPad != null) FlxTween.tween(touchPad, {alpha: 0}, 1);
+				FlxTween.tween(texts, {alpha: 0}, 1, {
+					onComplete: (_) -> MusicBeatState.switchState(new TitleState())
+				});
+				if (touchPad != null) FlxTween.tween(touchPad, {alpha: 0}, 1);
 			}
 		}
 		super.update(elapsed);
