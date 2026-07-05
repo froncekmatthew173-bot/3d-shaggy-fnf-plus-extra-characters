@@ -56,8 +56,9 @@ class FlashingState extends MusicBeatState
 
 	override function update(elapsed:Float)
 	{
+		super.update(elapsed);
+
 		if(leftState) {
-			super.update(elapsed);
 			return;
 		}
 
@@ -103,7 +104,6 @@ class FlashingState extends MusicBeatState
 				if (touchPad != null) FlxTween.tween(touchPad, {alpha: 0}, 1);
 			}
 		}
-		super.update(elapsed);
 	}
 
 	function updateItems() {
