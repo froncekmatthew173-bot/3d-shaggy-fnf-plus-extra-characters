@@ -151,8 +151,8 @@ class ClientPrefs {
 		'ui_down'		=> [S, DOWN],
 		'ui_right'		=> [D, RIGHT],
 		
-		'accept'		=> [SPACE, ENTER],
-		'back'			=> [BACKSPACE, ESCAPE],
+		'accept'		=> [A, SPACE, ENTER],
+		'back'			=> [B, BACKSPACE, ESCAPE],
 		'pause'			=> [ENTER, ESCAPE],
 		'reset'			=> [R],
 		
