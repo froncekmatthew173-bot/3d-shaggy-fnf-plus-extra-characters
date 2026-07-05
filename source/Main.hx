@@ -79,7 +79,7 @@ class Main extends Sprite
 		#if android
 		Sys.setCwd(Path.addTrailingSlash(Context.getExternalFilesDir()));
 		#elseif ios
-		Sys.setCwd(lime.system.System.applicationStorageDirectory);
+		Sys.setCwd(mobile.backend.StorageUtil.getStorageDirectory());
 		#end
 		#if VIDEOS_ALLOWED
 		hxvlc.util.Handle.init(#if (hxvlc >= "1.8.0")  ['--no-lua'] #end);
@@ -154,6 +154,11 @@ class Main extends Sprite
 		Controls.instance = new Controls();
 		ClientPrefs.loadDefaultKeys();
 		#if ACHIEVEMENTS_ALLOWED Achievements.load(); #end
+		#if mobile
+		FlxG.signals.postGameStart.addOnce(() -> {
+			FlxG.scaleMode = new mobile.backend.MobileScaleMode();
+		});
+		#end
 		addChild(new FlxGame(game.width, game.height, game.initialState, game.framerate, game.framerate, game.skipSplash, game.startFullscreen));
 
 		#if !mobile
@@ -177,7 +182,7 @@ class Main extends Sprite
 		#end
 
 		FlxG.fixedTimestep = false;
-		FlxG.game.focusLostFramerate = 60;
+		FlxG.game.focusLostFramerate = #if mobile 30 #else 60 #end;
 		FlxG.keys.preventDefaultKeys = [TAB];
 		
 		#if CRASH_HANDLER
@@ -215,14 +220,11 @@ class Main extends Sprite
 	function onCrash(e:UncaughtErrorEvent):Void
 	{
 		var errMsg:String = "";
-		var path:String;
 		var callStack:Array<StackItem> = CallStack.exceptionStack(true);
 		var dateNow:String = Date.now().toString();
 
 		dateNow = dateNow.replace(" ", "_");
 		dateNow = dateNow.replace(":", "'");
-
-		path = "./crash/" + "PsychEngine_" + dateNow + ".txt";
 
 		for (stackItem in callStack)
 		{
@@ -236,22 +238,32 @@ class Main extends Sprite
 		}
 
 		errMsg += "\nUncaught Error: " + e.error;
-		// remove if you're modding and want the crash log message to contain the link
-		// please remember to actually modify the link for the github page to report the issues to.
 		#if officialBuild
 		errMsg += "\nPlease report this error to the GitHub page: https://github.com/ShadowMario/FNF-PsychEngine";
 		#end
 		errMsg += "\n\n> Crash Handler written by: sqirra-rng";
 
-		if (!FileSystem.exists("./crash/"))
-			FileSystem.createDirectory("./crash/");
+		#if !mobile
+		try
+		{
+			var path:String = "./crash/" + "PsychEngine_" + dateNow + ".txt";
 
-		File.saveContent(path, errMsg + "\n");
+			if (!FileSystem.exists("./crash/"))
+				FileSystem.createDirectory("./crash/");
 
-		Sys.println(errMsg);
-		Sys.println("Crash dump saved in " + Path.normalize(path));
+			File.saveContent(path, errMsg + "\n");
 
-		Application.current.window.alert(errMsg, "Error!");
+			Sys.println(errMsg);
+			Sys.println("Crash dump saved in " + Path.normalize(path));
+
+			Application.current.window.alert(errMsg, "Error!");
+		}
+		catch (e2:Dynamic)
+		{
+			Sys.println("Failed to save crash dump: " + Std.string(e2));
+		}
+		#end
+
 		#if DISCORD_ALLOWED
 		DiscordClient.shutdown();
 		#end
