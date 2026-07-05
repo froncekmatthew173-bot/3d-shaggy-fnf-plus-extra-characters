@@ -25,6 +25,10 @@ class CreditsState extends MusicBeatState
 		#end
 
 		persistentUpdate = true;
+
+		addTouchPad("UP_DOWN", "A_B");
+		addTouchPadCamera();
+
 		bg = new FlxSprite().loadGraphic(Paths.image('menuDesat'));
 		bg.antialiasing = ClientPrefs.data.antialiasing;
 		add(bg);

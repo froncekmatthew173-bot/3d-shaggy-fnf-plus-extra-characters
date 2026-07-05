@@ -67,6 +67,9 @@ class StoryMenuState extends MusicBeatState
 			return;
 		}
 
+		addTouchPad("LEFT_FULL", "A_B_X_Y");
+		addTouchPadCamera();
+
 		if(curWeek >= WeekData.weeksList.length) curWeek = 0;
 
 		scoreText = new FlxText(10, 10, 0, Language.getPhrase('week_score', 'WEEK SCORE: {1}', [lerpScore]), 36);

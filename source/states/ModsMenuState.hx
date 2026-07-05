@@ -59,6 +59,9 @@ class ModsMenuState extends MusicBeatState
 		Paths.clearUnusedMemory();
 		persistentUpdate = false;
 
+		addTouchPad("UP_DOWN", "B");
+		addTouchPadCamera();
+
 		modsList = Mods.parseList();
 		Mods.loadTopMod();
 

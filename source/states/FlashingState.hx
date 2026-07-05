@@ -60,13 +60,25 @@ class FlashingState extends MusicBeatState
 			super.update(elapsed);
 			return;
 		}
+
+		var leftP:Bool = controls.UI_LEFT_P;
+		var rightP:Bool = controls.UI_RIGHT_P;
+		var accept:Bool = controls.ACCEPT;
 		var back:Bool = controls.BACK;
-		if (controls.UI_LEFT_P || controls.UI_RIGHT_P) {
+
+		if (touchPad != null) {
+			leftP = leftP || touchPad.buttonLeft.justPressed;
+			rightP = rightP || touchPad.buttonRight.justPressed;
+			accept = accept || touchPad.buttonA.justPressed;
+			back = back || touchPad.buttonB.justPressed;
+		}
+
+		if (leftP || rightP) {
 			FlxG.sound.play(Paths.sound("scrollMenu"), 0.7);
 			isYes = !isYes;
 			updateItems();
 		}
-		if (controls.ACCEPT || back) {
+		if (accept || back) {
 			leftState = true;
 			FlxTransitionableState.skipNextTransIn = true;
 			FlxTransitionableState.skipNextTransOut = true;

@@ -42,6 +42,9 @@ class MainMenuState extends MusicBeatState
 	{
 		super.create();
 
+		addTouchPad("NONE", "E");
+		addTouchPadCamera();
+
 		#if MODS_ALLOWED
 		Mods.pushGlobalMods();
 		#end

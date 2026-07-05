@@ -76,6 +76,9 @@ class FreeplayState extends MusicBeatState
 			return;
 		}
 
+		addTouchPad("LEFT_FULL", "A_B_C_X_Y_Z");
+		addTouchPadCamera();
+
 		for (i in 0...WeekData.weeksList.length)
 		{
 			if(weekIsLocked(WeekData.weeksList[i])) continue;

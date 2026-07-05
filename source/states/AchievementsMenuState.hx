@@ -29,6 +29,9 @@ class AchievementsMenuState extends MusicBeatState
 		DiscordClient.changePresence("Achievements Menu", null);
 		#end
 
+		addTouchPad("LEFT_FULL", "B_C");
+		addTouchPadCamera();
+
 		// prepare achievement list
 		for (achievement => data in Achievements.achievements)
 		{
