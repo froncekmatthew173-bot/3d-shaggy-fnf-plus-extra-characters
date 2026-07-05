@@ -43,12 +43,12 @@ class FlashingState extends MusicBeatState
 			button.x += (128 * i) - 80;
 			texts.add(button);
 		}
-		touchPad.alpha = 0;
+		if (touchPad != null) touchPad.alpha = 0;
 
 		FlxTween.tween(texts, {alpha: 1.0}, 0.5, {
 			onComplete: (_) -> updateItems()
 		});
-		FlxTween.tween(touchPad, {alpha: 1.0}, 0.5);
+		if (touchPad != null) FlxTween.tween(touchPad, {alpha: 1.0}, 0.5);
 	}
 
 	override function update(elapsed:Float)
@@ -77,15 +77,15 @@ class FlashingState extends MusicBeatState
 						FlxTween.tween(texts, {alpha: 0}, 0.2, {
 							onComplete: (_) -> MusicBeatState.switchState(new TitleState())
 						});
-						FlxTween.tween(touchPad, {alpha: 0}, 0.2);
+						if (touchPad != null) FlxTween.tween(touchPad, {alpha: 0}, 0.2);
 					});
 				});
 			} else {
 				FlxG.sound.play(Paths.sound('cancelMenu'));
-				FlxTween.tween(texts, {alpha: 0}, 1, {
-					onComplete: (_) -> MusicBeatState.switchState(new TitleState())
-				});
-				FlxTween.tween(touchPad, {alpha: 0}, 1);
+			FlxTween.tween(texts, {alpha: 0}, 1, {
+				onComplete: (_) -> MusicBeatState.switchState(new TitleState())
+			});
+			if (touchPad != null) FlxTween.tween(touchPad, {alpha: 0}, 1);
 			}
 		}
 		super.update(elapsed);
