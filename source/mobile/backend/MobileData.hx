@@ -147,6 +147,8 @@ class MobileData
 
 	static function set_mode(mode:Int = 3)
 	{
+		if (save == null)
+			init();
 		save.data.mobileControlsMode = mode;
 		save.flush();
 		return mode;
@@ -156,6 +158,9 @@ class MobileData
 	{
 		if (forcedMode != null)
 			return forcedMode;
+
+		if (save == null)
+			init();
 
 		if (save.data.mobileControlsMode == null)
 		{
