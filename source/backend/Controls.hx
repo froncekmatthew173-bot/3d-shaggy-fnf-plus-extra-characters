@@ -1,15 +1,9 @@
 package backend;
 
-import flixel.FlxG;
 import flixel.input.gamepad.FlxGamepadButton;
 import flixel.input.gamepad.FlxGamepadInputID;
 import flixel.input.gamepad.mappings.FlxGamepadMapping;
 import flixel.input.keyboard.FlxKey;
-
-#if android
-import mobile.objects.MobileControls;
-import mobile.objects.Hitbox;
-#end
 
 class Controls
 {
@@ -88,16 +82,19 @@ class Controls
 	private function get_PAUSE() return justPressed('pause');
 	private function get_RESET() return justPressed('reset');
 
-	//Gamepad & Keyboard & Mobile stuff
+	//Gamepad, Keyboard & Mobile stuff
 	public var keyboardBinds:Map<String, Array<FlxKey>>;
 	public var gamepadBinds:Map<String, Array<FlxGamepadInputID>>;
-
+	public var mobileBinds:Map<String, Array<MobileInputID>>;
 	public function justPressed(key:String)
 	{
 		var result:Bool = (FlxG.keys.anyJustPressed(keyboardBinds[key]) == true);
 		if(result) controllerMode = false;
 
-		return result || _myGamepadJustPressed(gamepadBinds[key]) == true #if android || _myAndroidJustPressed(key) == true #end;
+		return result
+			|| _myGamepadJustPressed(gamepadBinds[key]) == true
+			|| mobileCJustPressed(mobileBinds[key]) == true
+			|| touchPadJustPressed(mobileBinds[key]) == true;
 	}
 
 	public function pressed(key:String)
@@ -105,7 +102,10 @@ class Controls
 		var result:Bool = (FlxG.keys.anyPressed(keyboardBinds[key]) == true);
 		if(result) controllerMode = false;
 
-		return result || _myGamepadPressed(gamepadBinds[key]) == true #if android || _myAndroidPressed(key) == true #end;
+		return result
+			|| _myGamepadPressed(gamepadBinds[key]) == true
+			|| mobileCPressed(mobileBinds[key]) == true
+			|| touchPadPressed(mobileBinds[key]) == true;
 	}
 
 	public function justReleased(key:String)
@@ -113,7 +113,10 @@ class Controls
 		var result:Bool = (FlxG.keys.anyJustReleased(keyboardBinds[key]) == true);
 		if(result) controllerMode = false;
 
-		return result || _myGamepadJustReleased(gamepadBinds[key]) == true #if android || _myAndroidJustReleased(key) == true #end;
+		return result
+			|| _myGamepadJustReleased(gamepadBinds[key]) == true
+			|| mobileCJustReleased(mobileBinds[key]) == true
+			|| touchPadJustReleased(mobileBinds[key]) == true;
 	}
 
 	public var controllerMode:Bool = false;
@@ -163,110 +166,95 @@ class Controls
 		return false;
 	}
 
-	#if android
-	private function _myAndroidJustPressed(key:String):Bool
+	public var isInSubstate:Bool = false; // don't worry about this it becomes true and false on it's own in MusicBeatSubstate
+	public var requestedInstance(get, default):Dynamic; // is set to MusicBeatState or MusicBeatSubstate when the constructor is called
+	public var requestedMobileC(get, default):IMobileControls; // for PlayState and EditorPlayState (hitbox and touchPad)
+	public var mobileC(get, never):Bool;
+
+	private function touchPadPressed(keys:Array<MobileInputID>):Bool
 	{
-		var mobileControls:MobileControls = MobileControls.instance;
-		if (mobileControls == null) return false;
+		if (keys != null && requestedInstance.touchPad != null)
+			if (requestedInstance.touchPad.anyPressed(keys) == true)
+				return true;
 
-		var result:Bool = false;
-
-		switch(key)
-		{
-			case 'ui_up':
-				result = mobileControls.anyJustPressed([FlxNewHitbox.DPAD_UP]);
-			case 'ui_down':
-				result = mobileControls.anyJustPressed([FlxNewHitbox.DPAD_DOWN]);
-			case 'ui_left':
-				result = mobileControls.anyJustPressed([FlxNewHitbox.DPAD_LEFT]);
-			case 'ui_right':
-				result = mobileControls.anyJustPressed([FlxNewHitbox.DPAD_RIGHT]);
-			case 'note_up':
-				result = mobileControls.anyJustPressed([FlxNewHitbox.DPAD_UP]);
-			case 'note_down':
-				result = mobileControls.anyJustPressed([FlxNewHitbox.DPAD_DOWN]);
-			case 'note_left':
-				result = mobileControls.anyJustPressed([FlxNewHitbox.DPAD_LEFT]);
-			case 'note_right':
-				result = mobileControls.anyJustPressed([FlxNewHitbox.DPAD_RIGHT]);
-			case 'accept':
-				result = mobileControls.anyJustPressed([FlxNewHitbox.DPAD_UP]);
-			case 'back':
-				result = mobileControls.anyJustPressed([FlxNewHitbox.DPAD_DOWN]);
-		}
-
-		if (result) controllerMode = true;
-		return result;
+		return false;
 	}
 
-	private function _myAndroidPressed(key:String):Bool
+	private function touchPadJustPressed(keys:Array<MobileInputID>):Bool
 	{
-		var mobileControls:MobileControls = MobileControls.instance;
-		if (mobileControls == null) return false;
+		if (keys != null && requestedInstance.touchPad != null)
+			if (requestedInstance.touchPad.anyJustPressed(keys) == true)
+				return true;
 
-		var result:Bool = false;
-
-		switch(key)
-		{
-			case 'ui_up':
-				result = mobileControls.anyPressed([FlxNewHitbox.DPAD_UP]);
-			case 'ui_down':
-				result = mobileControls.anyPressed([FlxNewHitbox.DPAD_DOWN]);
-			case 'ui_left':
-				result = mobileControls.anyPressed([FlxNewHitbox.DPAD_LEFT]);
-			case 'ui_right':
-				result = mobileControls.anyPressed([FlxNewHitbox.DPAD_RIGHT]);
-			case 'note_up':
-				result = mobileControls.anyPressed([FlxNewHitbox.DPAD_UP]);
-			case 'note_down':
-				result = mobileControls.anyPressed([FlxNewHitbox.DPAD_DOWN]);
-			case 'note_left':
-				result = mobileControls.anyPressed([FlxNewHitbox.DPAD_LEFT]);
-			case 'note_right':
-				result = mobileControls.anyPressed([FlxNewHitbox.DPAD_RIGHT]);
-		}
-
-		if (result) controllerMode = true;
-		return result;
+		return false;
 	}
 
-	private function _myAndroidJustReleased(key:String):Bool
+	private function touchPadJustReleased(keys:Array<MobileInputID>):Bool
 	{
-		var mobileControls:MobileControls = MobileControls.instance;
-		if (mobileControls == null) return false;
+		if (keys != null && requestedInstance.touchPad != null)
+			if (requestedInstance.touchPad.anyJustReleased(keys) == true)
+				return true;
 
-		var result:Bool = false;
-
-		switch(key)
-		{
-			case 'ui_up':
-				result = mobileControls.anyJustReleased([FlxNewHitbox.DPAD_UP]);
-			case 'ui_down':
-				result = mobileControls.anyJustReleased([FlxNewHitbox.DPAD_DOWN]);
-			case 'ui_left':
-				result = mobileControls.anyJustReleased([FlxNewHitbox.DPAD_LEFT]);
-			case 'ui_right':
-				result = mobileControls.anyJustReleased([FlxNewHitbox.DPAD_RIGHT]);
-			case 'note_up':
-				result = mobileControls.anyJustReleased([FlxNewHitbox.DPAD_UP]);
-			case 'note_down':
-				result = mobileControls.anyJustReleased([FlxNewHitbox.DPAD_DOWN]);
-			case 'note_left':
-				result = mobileControls.anyJustReleased([FlxNewHitbox.DPAD_LEFT]);
-			case 'note_right':
-				result = mobileControls.anyJustReleased([FlxNewHitbox.DPAD_RIGHT]);
-		}
-
-		if (result) controllerMode = true;
-		return result;
+		return false;
 	}
-	#end
 
-	// IGNORE THESE
+	private function mobileCPressed(keys:Array<MobileInputID>):Bool
+	{
+		if (keys != null && requestedMobileC != null)
+			if (requestedMobileC.instance.anyPressed(keys))
+				return true;
+
+		return false;
+	}
+
+	private function mobileCJustPressed(keys:Array<MobileInputID>):Bool
+	{
+		if (keys != null && requestedMobileC != null)
+			if (requestedMobileC.instance.anyJustPressed(keys))
+				return true;
+
+		return false;
+	}
+
+	private function mobileCJustReleased(keys:Array<MobileInputID>):Bool
+	{
+		if (keys != null && requestedMobileC != null)
+			if (requestedMobileC.instance.anyJustReleased(keys))
+				return true;
+
+		return false;
+	}
+
+	@:noCompletion
+	private function get_requestedInstance():Dynamic
+	{
+		if (isInSubstate)
+			return MusicBeatSubstate.instance;
+		else
+			return MusicBeatState.getState();
+	}
+
+	@:noCompletion
+	private function get_requestedMobileC():IMobileControls
+	{
+		return requestedInstance.mobileControls;
+	}
+
+	@:noCompletion
+	private function get_mobileC():Bool
+	{
+		if (ClientPrefs.data.controlsAlpha >= 0.1)
+			return true;
+		else
+			return false;
+	}
+
+	// IGNORE THESE/ karim: no.
 	public static var instance:Controls;
 	public function new()
 	{
 		keyboardBinds = ClientPrefs.keyBinds;
 		gamepadBinds = ClientPrefs.gamepadBinds;
+		mobileBinds = ClientPrefs.mobileBinds;
 	}
 }
