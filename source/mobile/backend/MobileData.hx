@@ -26,6 +26,7 @@ import haxe.ds.Map;
 import haxe.Json;
 import haxe.io.Path;
 import openfl.utils.Assets;
+import openfl.utils.AssetType;
 import flixel.util.FlxSave;
 import sys.FileSystem;
 
@@ -165,7 +166,7 @@ class MobileData
 
 		// Fallback: enumerate via OpenFL Assets (works on mobile where files are embedded)
 		try {
-			var assetList:Array<String> = Assets.list(TEXT);
+			var assetList:Array<String> = Assets.list(AssetType.TEXT);
 			for (assetPath in assetList) {
 				// asset paths are like "assets/shared/mobile/DPadModes/LEFT_FULL.json"
 				if (assetPath.indexOf(folder) == -1) continue;
@@ -182,9 +183,31 @@ class MobileData
 			trace('MobileData.readDirectory Assets fallback failed for $folder: $e');
 		}
 
-		// Last resort: if still empty, try direct known files via Assets.exists
+		// Last resort: if still empty, directly try known asset paths (works even when Assets.list is filtered)
 		if (!map.keys().hasNext()) {
-			trace('Warning: MobileData.readDirectory found no files for $folder via FileSystem or Assets');
+			trace('Warning: MobileData.readDirectory found no files for $folder via FileSystem or Assets, trying direct loads');
+			var knownFiles:Array<String> = [];
+			if (folder.indexOf('DPadModes') != -1) knownFiles = ['LEFT_FULL','RIGHT_FULL','LEFT_RIGHT','UP_DOWN','DIALOGUE_PORTRAIT','MENU_CHARACTER'];
+			else if (folder.indexOf('ActionModes') != -1) knownFiles = ['A','B','E','P','A_B','A_B_C','A_B_X_Y','A_B_C_X_Y_Z','A_B_C_D_V_X_Y_Z','B_C','NONE','MENU_CHARACTER','DIALOGUE_PORTRAIT','CHARACTER_EDITOR','CHART_EDITOR','NOTE_SPLASH_EDITOR'];
+			for (k in knownFiles) {
+				var p = folder + '/' + k + '.json';
+				// try multiple lookup variants: raw, shared path, colon-stripped
+				for (trial in [p, 'assets/shared/mobile/' + (folder.indexOf('DPadModes')!=-1?'DPadModes/':'ActionModes/') + k + '.json']) {
+					try {
+						if (!Assets.exists(trial, AssetType.TEXT) && !openfl.utils.Assets.exists(trial, AssetType.TEXT)) continue;
+						var str = Assets.getText(trial);
+						if (str == null) continue;
+						var json:TouchButtonsData = cast Json.parse(str);
+						if (!map.exists(k)) {
+							map.set(k, json);
+							trace('MobileData direct loaded $trial');
+						}
+						break;
+					} catch(e) {}
+				}
+			}
+			if (!map.keys().hasNext()) trace('ERROR: MobileData still empty for $folder');
+			else trace('MobileData recovered ${[for(k in map.keys()) k].join(",")} for $folder');
 		}
 	}
 
