@@ -33,8 +33,9 @@ class StrumNote extends FlxSprite
 		rgbShader.enabled = false;
 		if(PlayState.SONG != null && PlayState.SONG.disableNoteRGB) useRGBShader = false;
 		
+		var usePixelRGB = Note.shouldUsePixelNotes(player==1);
 		var arr:Array<FlxColor> = ClientPrefs.data.arrowRGB[leData % ClientPrefs.data.arrowRGB.length];
-		if(PlayState.isPixelStage) arr = ClientPrefs.data.arrowRGBPixel[leData % ClientPrefs.data.arrowRGBPixel.length];
+		if(usePixelRGB) arr = ClientPrefs.data.arrowRGBPixel[leData % ClientPrefs.data.arrowRGBPixel.length];
 		
 		if(leData <= arr.length)
 		{
@@ -70,7 +71,7 @@ class StrumNote extends FlxSprite
 		var lastAnim:String = null;
 		if(animation.curAnim != null) lastAnim = animation.curAnim.name;
 
-		if(PlayState.isPixelStage)
+		if(Note.shouldUsePixelNotes(player==1))
 		{
 			loadGraphic(Paths.image('pixelUI/' + texture));
 			width = width / 4;

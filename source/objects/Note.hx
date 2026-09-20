@@ -412,7 +412,7 @@ class Note extends FlxSprite
 			noteSplashData.useRGBShader = false;
 		}
 
-		if(PlayState.isPixelStage) {
+		if(shouldUsePixelNotes(mustPress)) {
 			if(isSustainNote) {
 				var graphic = Paths.image('pixelUI/' + skinPixel + 'ENDS' + skinPostfix);
 				loadGraphic(graphic, true, Math.floor(graphic.width / 4), Math.floor(graphic.height / 2));
@@ -512,6 +512,20 @@ class Note extends FlxSprite
 	// For animations/profile, any 3d variant (3d, 3d2, 3d3 etc) should keep 3d animations
 	public static function is3DAnimTexture(texture:String):Bool
 		return texture != null && texture.toLowerCase().contains('3d');
+
+	// Pixel chars should get pixel notes even on non-pixel stages
+	public static function isPixelCharacter(name:String):Bool {
+		if(name==null) return false;
+		var n = name.toLowerCase();
+		return n.contains('pixel') || n=='senpai' || n=='senpai-angry' || n=='spirit';
+	}
+	public static function shouldUsePixelNotes(?mustPress:Null<Bool>=null):Bool {
+		if(PlayState.isPixelStage) return true;
+		try {
+			if(mustPress==null) return isPixelCharacter(PlayState.instance?.dad?.curCharacter) || isPixelCharacter(PlayState.instance?.boyfriend?.curCharacter);
+			return mustPress ? isPixelCharacter(PlayState.instance?.boyfriend?.curCharacter) : isPixelCharacter(PlayState.instance?.dad?.curCharacter);
+		} catch(e) return false;
+	}
 
 	public static function getProfileForTexture(texture:String, ?keyCount:Int = 4):Array<String>
 	{
@@ -715,7 +729,7 @@ class Note extends FlxSprite
 			y = strumY + offsetY + correctionOffset + Math.sin(angleDir) * distance;
 			if(myStrum.downScroll && isSustainNote)
 			{
-				if(PlayState.isPixelStage)
+				if(shouldUsePixelNotes(mustPress))
 				{
 					y -= PlayState.daPixelZoom * 9.5;
 				}
