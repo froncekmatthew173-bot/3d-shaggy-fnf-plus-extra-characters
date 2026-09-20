@@ -1,0 +1,106 @@
+{
+  "ATLAS": {
+    "SPRITES": [
+      {
+        "SPRITE": {
+          "name": "leg_back1",
+          "x": 4,
+          "y": 4,
+          "w": 8,
+          "h": 13,
+          "rotated": false
+        }
+      },
+      {
+        "SPRITE": {
+          "name": "leg_back2",
+          "x": 16,
+          "y": 4,
+          "w": 8,
+          "h": 10,
+          "rotated": false
+        }
+      },
+      {
+        "SPRITE": {
+          "name": "leg_front",
+          "x": 28,
+          "y": 4,
+          "w": 7,
+          "h": 12,
+          "rotated": false
+        }
+      },
+      {
+        "SPRITE": {
+          "name": "tail",
+          "x": 39,
+          "y": 4,
+          "w": 19,
+          "h": 26,
+          "rotated": false
+        }
+      },
+      {
+        "SPRITE": {
+          "name": "body",
+          "x": 62,
+          "y": 4,
+          "w": 14,
+          "h": 11,
+          "rotated": false
+        }
+      },
+      {
+        "SPRITE": {
+          "name": "ear1",
+          "x": 80,
+          "y": 4,
+          "w": 7,
+          "h": 17,
+          "rotated": false
+        }
+      },
+      {
+        "SPRITE": {
+          "name": "ear2",
+          "x": 91,
+          "y": 4,
+          "w": 14,
+          "h": 15,
+          "rotated": false
+        }
+      },
+      {
+        "SPRITE": {
+          "name": "fluff",
+          "x": 109,
+          "y": 4,
+          "w": 23,
+          "h": 18,
+          "rotated": false
+        }
+      },
+      {
+        "SPRITE": {
+          "name": "head_sing",
+          "x": 136,
+          "y": 4,
+          "w": 18,
+          "h": 18,
+          "rotated": false
+        }
+      },
+      {
+        "SPRITE": {
+          "name": "head_normal",
+          "x": 158,
+          "y": 4,
+          "w": 18,
+          "h": 18,
+          "rotated": false
+        }
+      }
+    ]
+  }
+}

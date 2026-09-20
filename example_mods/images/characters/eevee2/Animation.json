@@ -1,0 +1,663 @@
+{
+  "AN": {
+    "N": "Eevee Animations",
+    "SN": "Eevee Animations",
+    "TL": {
+      "L": [
+        {
+          "LN": "Layer_2",
+          "FR": [
+            {
+              "N": "idle",
+              "I": 0,
+              "DU": 1,
+              "E": []
+            },
+            {
+              "N": "idle",
+              "I": 1,
+              "DU": 1,
+              "E": []
+            },
+            {
+              "N": "idle",
+              "I": 2,
+              "DU": 1,
+              "E": []
+            },
+            {
+              "N": "idle",
+              "I": 3,
+              "DU": 1,
+              "E": []
+            },
+            {
+              "N": "idle",
+              "I": 4,
+              "DU": 1,
+              "E": []
+            },
+            {
+              "N": "idle",
+              "I": 5,
+              "DU": 1,
+              "E": []
+            },
+            {
+              "N": "idle",
+              "I": 6,
+              "DU": 1,
+              "E": []
+            },
+            {
+              "N": "idle",
+              "I": 7,
+              "DU": 1,
+              "E": []
+            },
+            {
+              "N": "idle",
+              "I": 8,
+              "DU": 1,
+              "E": []
+            },
+            {
+              "N": "idle",
+              "I": 9,
+              "DU": 1,
+              "E": []
+            },
+            {
+              "N": "idle",
+              "I": 10,
+              "DU": 1,
+              "E": []
+            },
+            {
+              "N": "idle",
+              "I": 11,
+              "DU": 1,
+              "E": []
+            },
+            {
+              "N": "singLEFT",
+              "I": 12,
+              "DU": 1,
+              "E": []
+            },
+            {
+              "N": "singLEFT",
+              "I": 13,
+              "DU": 1,
+              "E": []
+            },
+            {
+              "N": "singLEFT",
+              "I": 14,
+              "DU": 1,
+              "E": []
+            },
+            {
+              "N": "singLEFT",
+              "I": 15,
+              "DU": 1,
+              "E": []
+            },
+            {
+              "N": "singLEFT",
+              "I": 16,
+              "DU": 1,
+              "E": []
+            },
+            {
+              "N": "singLEFT",
+              "I": 17,
+              "DU": 1,
+              "E": []
+            },
+            {
+              "N": "singDOWN",
+              "I": 18,
+              "DU": 1,
+              "E": []
+            },
+            {
+              "N": "singDOWN",
+              "I": 19,
+              "DU": 1,
+              "E": []
+            },
+            {
+              "N": "singDOWN",
+              "I": 20,
+              "DU": 1,
+              "E": []
+            },
+            {
+              "N": "singDOWN",
+              "I": 21,
+              "DU": 1,
+              "E": []
+            },
+            {
+              "N": "singDOWN",
+              "I": 22,
+              "DU": 1,
+              "E": []
+            },
+            {
+              "N": "singDOWN",
+              "I": 23,
+              "DU": 1,
+              "E": []
+            },
+            {
+              "N": "singUP",
+              "I": 24,
+              "DU": 1,
+              "E": []
+            },
+            {
+              "N": "singUP",
+              "I": 25,
+              "DU": 1,
+              "E": []
+            },
+            {
+              "N": "singUP",
+              "I": 26,
+              "DU": 1,
+              "E": []
+            },
+            {
+              "N": "singUP",
+              "I": 27,
+              "DU": 1,
+              "E": []
+            },
+            {
+              "N": "singUP",
+              "I": 28,
+              "DU": 1,
+              "E": []
+            },
+            {
+              "N": "singUP",
+              "I": 29,
+              "DU": 1,
+              "E": []
+            },
+            {
+              "N": "singRIGHT",
+              "I": 30,
+              "DU": 1,
+              "E": []
+            },
+            {
+              "N": "singRIGHT",
+              "I": 31,
+              "DU": 1,
+              "E": []
+            },
+            {
+              "N": "singRIGHT",
+              "I": 32,
+              "DU": 1,
+              "E": []
+            },
+            {
+              "N": "singRIGHT",
+              "I": 33,
+              "DU": 1,
+              "E": []
+            },
+            {
+              "N": "singRIGHT",
+              "I": 34,
+              "DU": 1,
+              "E": []
+            },
+            {
+              "N": "singRIGHT",
+              "I": 35,
+              "DU": 1,
+              "E": []
+            },
+            {
+              "N": "singLEFT-loop",
+              "I": 36,
+              "DU": 1,
+              "E": []
+            },
+            {
+              "N": "singLEFT-loop",
+              "I": 37,
+              "DU": 1,
+              "E": []
+            },
+            {
+              "N": "singLEFT-loop",
+              "I": 38,
+              "DU": 1,
+              "E": []
+            },
+            {
+              "N": "singLEFT-loop",
+              "I": 39,
+              "DU": 1,
+              "E": []
+            },
+            {
+              "N": "singLEFT-loop",
+              "I": 40,
+              "DU": 1,
+              "E": []
+            },
+            {
+              "N": "singLEFT-loop",
+              "I": 41,
+              "DU": 1,
+              "E": []
+            },
+            {
+              "N": "singDOWN-loop",
+              "I": 42,
+              "DU": 1,
+              "E": []
+            },
+            {
+              "N": "singDOWN-loop",
+              "I": 43,
+              "DU": 1,
+              "E": []
+            },
+            {
+              "N": "singDOWN-loop",
+              "I": 44,
+              "DU": 1,
+              "E": []
+            },
+            {
+              "N": "singDOWN-loop",
+              "I": 45,
+              "DU": 1,
+              "E": []
+            },
+            {
+              "N": "singDOWN-loop",
+              "I": 46,
+              "DU": 1,
+              "E": []
+            },
+            {
+              "N": "singDOWN-loop",
+              "I": 47,
+              "DU": 1,
+              "E": []
+            },
+            {
+              "N": "singUP-loop",
+              "I": 48,
+              "DU": 1,
+              "E": []
+            },
+            {
+              "N": "singUP-loop",
+              "I": 49,
+              "DU": 1,
+              "E": []
+            },
+            {
+              "N": "singUP-loop",
+              "I": 50,
+              "DU": 1,
+              "E": []
+            },
+            {
+              "N": "singUP-loop",
+              "I": 51,
+              "DU": 1,
+              "E": []
+            },
+            {
+              "N": "singUP-loop",
+              "I": 52,
+              "DU": 1,
+              "E": []
+            },
+            {
+              "N": "singUP-loop",
+              "I": 53,
+              "DU": 1,
+              "E": []
+            },
+            {
+              "N": "singRIGHT-loop",
+              "I": 54,
+              "DU": 1,
+              "E": []
+            },
+            {
+              "N": "singRIGHT-loop",
+              "I": 55,
+              "DU": 1,
+              "E": []
+            },
+            {
+              "N": "singRIGHT-loop",
+              "I": 56,
+              "DU": 1,
+              "E": []
+            },
+            {
+              "N": "singRIGHT-loop",
+              "I": 57,
+              "DU": 1,
+              "E": []
+            },
+            {
+              "N": "singRIGHT-loop",
+              "I": 58,
+              "DU": 1,
+              "E": []
+            },
+            {
+              "N": "singRIGHT-loop",
+              "I": 59,
+              "DU": 1,
+              "E": []
+            },
+            {
+              "N": "singLEFTmiss",
+              "I": 60,
+              "DU": 1,
+              "E": []
+            },
+            {
+              "N": "singLEFTmiss",
+              "I": 61,
+              "DU": 1,
+              "E": []
+            },
+            {
+              "N": "singLEFTmiss",
+              "I": 62,
+              "DU": 1,
+              "E": []
+            },
+            {
+              "N": "singLEFTmiss",
+              "I": 63,
+              "DU": 1,
+              "E": []
+            },
+            {
+              "N": "singDOWNmiss",
+              "I": 64,
+              "DU": 1,
+              "E": []
+            },
+            {
+              "N": "singDOWNmiss",
+              "I": 65,
+              "DU": 1,
+              "E": []
+            },
+            {
+              "N": "singDOWNmiss",
+              "I": 66,
+              "DU": 1,
+              "E": []
+            },
+            {
+              "N": "singDOWNmiss",
+              "I": 67,
+              "DU": 1,
+              "E": []
+            },
+            {
+              "N": "singUPmiss",
+              "I": 68,
+              "DU": 1,
+              "E": []
+            },
+            {
+              "N": "singUPmiss",
+              "I": 69,
+              "DU": 1,
+              "E": []
+            },
+            {
+              "N": "singUPmiss",
+              "I": 70,
+              "DU": 1,
+              "E": []
+            },
+            {
+              "N": "singUPmiss",
+              "I": 71,
+              "DU": 1,
+              "E": []
+            },
+            {
+              "N": "singRIGHTmiss",
+              "I": 72,
+              "DU": 1,
+              "E": []
+            },
+            {
+              "N": "singRIGHTmiss",
+              "I": 73,
+              "DU": 1,
+              "E": []
+            },
+            {
+              "N": "singRIGHTmiss",
+              "I": 74,
+              "DU": 1,
+              "E": []
+            },
+            {
+              "N": "singRIGHTmiss",
+              "I": 75,
+              "DU": 1,
+              "E": []
+            },
+            {
+              "N": "hey",
+              "I": 76,
+              "DU": 1,
+              "E": []
+            },
+            {
+              "N": "hey",
+              "I": 77,
+              "DU": 1,
+              "E": []
+            },
+            {
+              "N": "hey",
+              "I": 78,
+              "DU": 1,
+              "E": []
+            },
+            {
+              "N": "hey",
+              "I": 79,
+              "DU": 1,
+              "E": []
+            },
+            {
+              "N": "hurt",
+              "I": 80,
+              "DU": 1,
+              "E": []
+            },
+            {
+              "N": "hurt",
+              "I": 81,
+              "DU": 1,
+              "E": []
+            },
+            {
+              "N": "hurt",
+              "I": 82,
+              "DU": 1,
+              "E": []
+            },
+            {
+              "N": "hit",
+              "I": 83,
+              "DU": 1,
+              "E": []
+            },
+            {
+              "N": "hit",
+              "I": 84,
+              "DU": 1,
+              "E": []
+            },
+            {
+              "N": "hit",
+              "I": 85,
+              "DU": 1,
+              "E": []
+            },
+            {
+              "N": "scared",
+              "I": 86,
+              "DU": 1,
+              "E": []
+            },
+            {
+              "N": "scared",
+              "I": 87,
+              "DU": 1,
+              "E": []
+            },
+            {
+              "N": "scared",
+              "I": 88,
+              "DU": 1,
+              "E": []
+            },
+            {
+              "N": "scared",
+              "I": 89,
+              "DU": 1,
+              "E": []
+            },
+            {
+              "N": "scared",
+              "I": 90,
+              "DU": 1,
+              "E": []
+            },
+            {
+              "N": "scared",
+              "I": 91,
+              "DU": 1,
+              "E": []
+            },
+            {
+              "N": "dodge",
+              "I": 92,
+              "DU": 1,
+              "E": []
+            },
+            {
+              "N": "dodge",
+              "I": 93,
+              "DU": 1,
+              "E": []
+            },
+            {
+              "N": "dodge",
+              "I": 94,
+              "DU": 1,
+              "E": []
+            },
+            {
+              "N": "dodge",
+              "I": 95,
+              "DU": 1,
+              "E": []
+            },
+            {
+              "N": "attack",
+              "I": 96,
+              "DU": 1,
+              "E": []
+            },
+            {
+              "N": "attack",
+              "I": 97,
+              "DU": 1,
+              "E": []
+            },
+            {
+              "N": "attack",
+              "I": 98,
+              "DU": 1,
+              "E": []
+            },
+            {
+              "N": "attack",
+              "I": 99,
+              "DU": 1,
+              "E": []
+            },
+            {
+              "N": "attack",
+              "I": 100,
+              "DU": 1,
+              "E": []
+            },
+            {
+              "N": "attack",
+              "I": 101,
+              "DU": 1,
+              "E": []
+            },
+            {
+              "N": "pre-attack",
+              "I": 102,
+              "DU": 1,
+              "E": []
+            },
+            {
+              "N": "pre-attack",
+              "I": 103,
+              "DU": 1,
+              "E": []
+            },
+            {
+              "N": "pre-attack",
+              "I": 104,
+              "DU": 1,
+              "E": []
+            },
+            {
+              "N": "pre-attack",
+              "I": 105,
+              "DU": 1,
+              "E": []
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "PARTS": [
+    "leg_back1",
+    "leg_back2",
+    "leg_front",
+    "tail",
+    "body",
+    "ear1",
+    "ear2",
+    "fluff",
+    "head_sing",
+    "head_normal"
+  ]
+}
