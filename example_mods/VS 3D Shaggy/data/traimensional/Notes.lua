@@ -17,6 +17,14 @@ local function is3DCharacter(char)
     return threeDCharacters[string.lower(char or '')] == true
 end
 
+local function disableRGBForGroup(group, length)
+    for i = 0, length - 1 do
+        -- disable RGB shader if present
+        pcall(function() setPropertyFromGroup(group, i, 'rgbShader.enabled', false) end)
+        -- also reset color to white to prevent tint
+    end
+end
+
 local function updateStrums()
     local total = getProperty('strumLineNotes.length')
     local split = math.floor(total / 2)
@@ -37,6 +45,10 @@ local function updateStrums()
         if currentTexture ~= texture then
             setPropertyFromGroup('strumLineNotes', i, 'texture', texture)
         end
+
+        -- disable strum note RGB
+        pcall(function() setPropertyFromGroup('strumLineNotes', i, 'rgbShader.enabled', false) end)
+        pcall(function() setPropertyFromGroup('strumLineNotes', i, 'useRGBShader', false) end)
     end
 end
 
@@ -60,6 +72,14 @@ local function updateUnspawnNotes()
                 dad3D and '3d' or ''
             )
         end
+        -- disable note RGB
+        pcall(function() setPropertyFromGroup('unspawnNotes', i, 'rgbShader.enabled', false) end)
+        pcall(function() setPropertyFromGroup('unspawnNotes', i, 'useRGBShader', false) end)
+    end
+    -- also disable for spawned notes
+    for i = 0, getProperty('notes.length') - 1 do
+        pcall(function() setPropertyFromGroup('notes', i, 'rgbShader.enabled', false) end)
+        pcall(function() setPropertyFromGroup('notes', i, 'useRGBShader', false) end)
     end
 end
 
@@ -100,9 +120,16 @@ local function refreshNotes()
 end
 
 function onCreatePost()
+    -- disable song-wide note RGB (engine flag)
+    pcall(function() setProperty('SONG.disableNoteRGB', true) end)
+    pcall(function() setPropertyFromClass('PlayState', 'SONG.disableNoteRGB', true) end)
     lastDad = getProperty('dad.curCharacter')
     lastBF = getProperty('boyfriend.curCharacter')
     refreshNotes()
+    -- ensure strum/notes RGB off immediately
+    disableRGBForGroup('strumLineNotes', getProperty('strumLineNotes.length'))
+    disableRGBForGroup('unspawnNotes', getProperty('unspawnNotes.length'))
+    disableRGBForGroup('notes', getProperty('notes.length'))
 end
 
 function onUpdatePost()
@@ -114,6 +141,9 @@ function onUpdatePost()
         lastBF = bf
         refreshNotes()
     end
+    -- keep RGB disabled every frame (covers new spawned notes)
+    disableRGBForGroup('notes', getProperty('notes.length'))
+    disableRGBForGroup('strumLineNotes', getProperty('strumLineNotes.length'))
 end
 
 function onEvent(name, v1, v2)
