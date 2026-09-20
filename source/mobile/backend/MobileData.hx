@@ -184,7 +184,7 @@ class MobileData
 		}
 
 		// Last resort: if still empty, directly try known asset paths (works even when Assets.list is filtered)
-		if (!map.keys().hasNext()) {
+		if (!(cast(map, Map<String, Dynamic>).keys().hasNext())) {
 			trace('Warning: MobileData.readDirectory found no files for $folder via FileSystem or Assets, trying direct loads');
 			var knownFiles:Array<String> = [];
 			if (folder.indexOf('DPadModes') != -1) knownFiles = ['LEFT_FULL','RIGHT_FULL','LEFT_RIGHT','UP_DOWN','DIALOGUE_PORTRAIT','MENU_CHARACTER'];
@@ -206,8 +206,9 @@ class MobileData
 					} catch(e) {}
 				}
 			}
-			if (!map.keys().hasNext()) trace('ERROR: MobileData still empty for $folder');
-			else trace('MobileData recovered ${[for(k in map.keys()) k].join(",")} for $folder');
+			var typedMap:Map<String, Dynamic> = cast map;
+			if (!typedMap.keys().hasNext()) trace('ERROR: MobileData still empty for $folder');
+			else trace('MobileData recovered ${[for(k in typedMap.keys()) k].join(",")} for $folder');
 		}
 	}
 
