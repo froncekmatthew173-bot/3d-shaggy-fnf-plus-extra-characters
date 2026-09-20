@@ -207,8 +207,19 @@ class MobileData
 				}
 			}
 			var typedMap:Map<String, Dynamic> = cast map;
-			if (!typedMap.keys().hasNext()) trace('ERROR: MobileData still empty for $folder');
-			else trace('MobileData recovered ${[for(k in typedMap.keys()) k].join(",")} for $folder');
+			if (!typedMap.keys().hasNext()) {
+				trace('ERROR: MobileData still empty for $folder - injecting hardcoded fallback');
+				// Hardcoded minimal fallback - guarantees LEFT_RIGHT + A_B exist even if asset system completely fails (common on Android if assets not listed)
+				if (folder.indexOf('DPadModes') != -1) {
+					if (!typedMap.exists('LEFT_RIGHT')) typedMap.set('LEFT_RIGHT', {buttons: [{button:"buttonLeft", graphic:"left", x:0, y:500, color:"0xFFC24B99"}, {button:"buttonRight", graphic:"right", x:196, y:500, color:"0xFF00FFFF"}]});
+					if (!typedMap.exists('LEFT_FULL')) typedMap.set('LEFT_FULL', {buttons: [{button:"buttonLeft", graphic:"left", x:0, y:500, color:"0xFFC24B99"}, {button:"buttonRight", graphic:"right", x:196, y:500, color:"0xFF00FFFF"}, {button:"buttonUp", graphic:"up", x:98, y:405, color:"0xFF12FA05"}, {button:"buttonDown", graphic:"down", x:98, y:595, color:"0xFF00FFFF"}]});
+					if (!typedMap.exists('RIGHT_FULL')) typedMap.set('RIGHT_FULL', {buttons: [{button:"buttonLeft", graphic:"left", x:800, y:500, color:"0xFFC24B99"}, {button:"buttonRight", graphic:"right", x:996, y:500, color:"0xFF00FFFF"}, {button:"buttonUp", graphic:"up", x:898, y:405, color:"0xFF12FA05"}, {button:"buttonDown", graphic:"down", x:898, y:595, color:"0xFF00FFFF"}]});
+				} else {
+					if (!typedMap.exists('A_B')) typedMap.set('A_B', {buttons: [{button:"buttonA", graphic:"a", x:1150, y:500, color:"0xFF00FF00"}, {button:"buttonB", graphic:"b", x:1050, y:600, color:"0xFFFF0000"}]});
+					if (!typedMap.exists('NONE')) typedMap.set('NONE', {buttons: []});
+				}
+				trace('MobileData hardcoded fallback injected for $folder: ${[for(k in typedMap.keys()) k].join(",")}');
+			} else trace('MobileData recovered ${[for(k in typedMap.keys()) k].join(",")} for $folder');
 		}
 	}
 

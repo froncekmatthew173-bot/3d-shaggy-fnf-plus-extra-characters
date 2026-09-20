@@ -77,7 +77,10 @@ class Main extends Sprite
 
 		// Credits to MAJigsaw77 (he's the og author for this code)
 		#if android
-		try Sys.setCwd(Path.addTrailingSlash(Context.getExternalFilesDir())) catch(e) trace('SetCwd android failed: $e');
+		try {
+			var dir = Context.getExternalFilesDir();
+			if (dir != null) Sys.setCwd(Path.addTrailingSlash(dir));
+		} catch(e) trace('SetCwd android failed: $e');
 		#elseif ios
 		try Sys.setCwd(mobile.backend.StorageUtil.getStorageDirectory()) catch(e) trace('SetCwd ios failed: $e');
 		#end
