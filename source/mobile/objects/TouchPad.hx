@@ -82,31 +82,45 @@ class TouchPad extends MobileInputManager implements IMobileControls
 	{
 		super();
 
+		// Ensure MobileData is initialized (fixes crash on desktop where TitleState only init on #if mobile)
+		if (MobileData.save == null) try MobileData.init() catch(e) trace('MobileData init failed: $e');
+
 		if (DPad != "NONE")
 		{
 			if (!MobileData.dpadModes.exists(DPad))
-				throw Language.getPhrase('touchpad_dpadmode_missing', 'The touchPad dpadMode "{1}" doesn\'t exist.', [DPad]);
-
-			for (buttonData in MobileData.dpadModes.get(DPad).buttons)
 			{
-				Reflect.setField(this, buttonData.button,
-					createButton(buttonData.x, buttonData.y, buttonData.graphic, CoolUtil.colorFromString(buttonData.color),
-						Reflect.getProperty(this, buttonData.button).IDs));
-				add(Reflect.field(this, buttonData.button));
+				trace('Warning: The touchPad dpadMode "$DPad" doesn\'t exist. Skipping dpad buttons. Available: ${[for(k in MobileData.dpadModes.keys()) k].join(", ")}');
+			}
+			else
+			{
+				for (buttonData in MobileData.dpadModes.get(DPad).buttons)
+				{
+					Reflect.setField(this, buttonData.button,
+						createButton(buttonData.x, buttonData.y, buttonData.graphic, CoolUtil.colorFromString(buttonData.color),
+							Reflect.getProperty(this, buttonData.button).IDs));
+					add(Reflect.field(this, buttonData.button));
+				}
 			}
 		}
 
 		if (Action != "NONE")
 		{
 			if (!MobileData.actionModes.exists(Action))
-				throw Language.getPhrase('touchpad_actionmode_missing', 'The touchPad actionMode "{1}" doesn\'t exist.', [DPad]);
-
-			for (buttonData in MobileData.actionModes.get(Action).buttons)
 			{
-				Reflect.setField(this, buttonData.button,
-					createButton(buttonData.x, buttonData.y, buttonData.graphic, CoolUtil.colorFromString(buttonData.color),
-						Reflect.getProperty(this, buttonData.button).IDs));
-				add(Reflect.field(this, buttonData.button));
+				// Fix: was incorrectly showing DPad value in error message, and threw hard crash on desktop where MobileData wasn't initialized.
+				// Instead of throwing, log a warning and continue with no action buttons (graceful fallback).
+				trace('Warning: The touchPad actionMode "$Action" doesn\'t exist. Skipping action buttons. Available: ${[for(k in MobileData.actionModes.keys()) k].join(", ")}');
+				// throw Language.getPhrase('touchpad_actionmode_missing', 'The touchPad actionMode "{1}" doesn\'t exist.', [Action]);
+			}
+			else
+			{
+				for (buttonData in MobileData.actionModes.get(Action).buttons)
+				{
+					Reflect.setField(this, buttonData.button,
+						createButton(buttonData.x, buttonData.y, buttonData.graphic, CoolUtil.colorFromString(buttonData.color),
+							Reflect.getProperty(this, buttonData.button).IDs));
+					add(Reflect.field(this, buttonData.button));
+				}
 			}
 		}
 
