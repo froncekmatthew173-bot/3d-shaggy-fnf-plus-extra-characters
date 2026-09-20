@@ -25,6 +25,8 @@ local function disableRGBForGroup(group, length)
     end
 end
 
+local function isPlain3D(tex) return tex == '3d' end
+
 local function updateStrums()
     local total = getProperty('strumLineNotes.length')
     local split = math.floor(total / 2)
@@ -37,13 +39,21 @@ local function updateStrums()
             texture = dad3D and '3d' or ''
         else
             texture = bf3D and '3d2' or ''
-            setPropertyFromGroup('strumLineNotes', i, 'antialiasing', true)
         end
 
         local currentTexture = getPropertyFromGroup('strumLineNotes', i, 'texture')
 
         if currentTexture ~= texture then
             setPropertyFromGroup('strumLineNotes', i, 'texture', texture)
+        end
+
+        -- only for plain '3d' (not 3d2/3d3/etc) set is3DNoteTexture + antialiasing false; keep animations for numbered
+        if isPlain3D(texture) then
+            pcall(function() setPropertyFromGroup('strumLineNotes', i, 'is3DNoteTexture', true) end)
+            setPropertyFromGroup('strumLineNotes', i, 'antialiasing', false)
+        else
+            pcall(function() setPropertyFromGroup('strumLineNotes', i, 'is3DNoteTexture', false) end)
+            if texture ~= '' then setPropertyFromGroup('strumLineNotes', i, 'antialiasing', true) end
         end
 
         -- disable strum note RGB
@@ -55,29 +65,36 @@ end
 local function updateUnspawnNotes()
     for i = 0, getProperty('unspawnNotes.length') - 1 do
         local mustPress = getPropertyFromGroup('unspawnNotes', i, 'mustPress')
-
+        local tex = ''
         if mustPress then
-            setPropertyFromGroup(
-                'unspawnNotes',
-                i,
-                'texture',
-                bf3D and '3d2' or ''
-            )
-            setPropertyFromGroup('unspawnNotes', i, 'antialiasing', true)
+            tex = bf3D and '3d2' or ''
+            setPropertyFromGroup('unspawnNotes', i, 'texture', tex)
         else
-            setPropertyFromGroup(
-                'unspawnNotes',
-                i,
-                'texture',
-                dad3D and '3d' or ''
-            )
+            tex = dad3D and '3d' or ''
+            setPropertyFromGroup('unspawnNotes', i, 'texture', tex)
+        end
+        -- only plain '3d' gets is3DNoteTexture + antialiasing false
+        if isPlain3D(tex) then
+            pcall(function() setPropertyFromGroup('unspawnNotes', i, 'is3DNoteTexture', true) end)
+            setPropertyFromGroup('unspawnNotes', i, 'antialiasing', false)
+        else
+            pcall(function() setPropertyFromGroup('unspawnNotes', i, 'is3DNoteTexture', false) end)
+            if tex ~= '' then setPropertyFromGroup('unspawnNotes', i, 'antialiasing', true) end
         end
         -- disable note RGB
         pcall(function() setPropertyFromGroup('unspawnNotes', i, 'rgbShader.enabled', false) end)
         pcall(function() setPropertyFromGroup('unspawnNotes', i, 'useRGBShader', false) end)
     end
-    -- also disable for spawned notes
+    -- also handle spawned notes (keep animations for numbered 3d)
     for i = 0, getProperty('notes.length') - 1 do
+        local tex = getPropertyFromGroup('notes', i, 'texture') or ''
+        if isPlain3D(tex) then
+            pcall(function() setPropertyFromGroup('notes', i, 'is3DNoteTexture', true) end)
+            setPropertyFromGroup('notes', i, 'antialiasing', false)
+        else
+            pcall(function() setPropertyFromGroup('notes', i, 'is3DNoteTexture', false) end)
+            if tex:match('^3d%d+$') then setPropertyFromGroup('notes', i, 'antialiasing', true) end
+        end
         pcall(function() setPropertyFromGroup('notes', i, 'rgbShader.enabled', false) end)
         pcall(function() setPropertyFromGroup('notes', i, 'useRGBShader', false) end)
     end
