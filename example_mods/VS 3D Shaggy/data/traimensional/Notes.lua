@@ -1,20 +1,28 @@
+-- now supports per-character texture: true = default (3d for dad, 3d2 for bf), or string like '3d3' for specific variant
 local threeDCharacters = {
-    ['shaggy'] = true,
-    ['shaggy-3d'] = true,
-    ['shaggy-god'] = true,
-    ['bf'] = true,
-    ['bf2'] = true,
-    ['eevee'] = true
+    ['shaggy'] = '3d',
+    ['shaggy-3d'] = '3d',
+    ['shaggy-god'] = '3d',
+    ['bf'] = '3d2',
+    ['bf2'] = '3d3',
+    ['eevee'] = '3d2'
 }
 
-local dad3D = false
+local dad3D = false -- will hold texture string or false
 local bf3D = false
 
 local lastDad = ''
 local lastBF = ''
 
+local function get3DTextureForChar(char, isDadSide)
+    local v = threeDCharacters[string.lower(char or '')]
+    if v == nil then return false end
+    if v == true then return isDadSide and '3d' or '3d2' end
+    if type(v) == 'string' then return v end
+    return false
+end
 local function is3DCharacter(char)
-    return threeDCharacters[string.lower(char or '')] == true
+    return get3DTextureForChar(char, true) ~= false
 end
 
 local function disableRGBForGroup(group, length)
@@ -36,9 +44,9 @@ local function updateStrums()
         local texture
 
         if isOpponent then
-            texture = dad3D and '3d' or ''
+            texture = dad3D or ''
         else
-            texture = bf3D and '3d2' or ''
+            texture = bf3D or ''
         end
 
         local currentTexture = getPropertyFromGroup('strumLineNotes', i, 'texture')
@@ -67,10 +75,10 @@ local function updateUnspawnNotes()
         local mustPress = getPropertyFromGroup('unspawnNotes', i, 'mustPress')
         local tex = ''
         if mustPress then
-            tex = bf3D and '3d2' or ''
+            tex = bf3D or ''
             setPropertyFromGroup('unspawnNotes', i, 'texture', tex)
         else
-            tex = dad3D and '3d' or ''
+            tex = dad3D or ''
             setPropertyFromGroup('unspawnNotes', i, 'texture', tex)
         end
         -- only plain '3d' gets is3DNoteTexture + antialiasing false
@@ -128,8 +136,8 @@ local function updateStrumPositions()
 end
 
 local function refreshNotes()
-    dad3D = is3DCharacter(getProperty('dad.curCharacter'))
-    bf3D = is3DCharacter(getProperty('boyfriend.curCharacter'))
+    dad3D = get3DTextureForChar(getProperty('dad.curCharacter'), true)
+    bf3D = get3DTextureForChar(getProperty('boyfriend.curCharacter'), false)
 
     updateStrums()
     updateUnspawnNotes()
