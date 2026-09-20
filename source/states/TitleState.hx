@@ -89,7 +89,7 @@ class TitleState extends MusicBeatState
 			}
 			persistentUpdate = true;
 			persistentDraw = true;
-			MobileData.init();
+			try MobileData.init() catch(e) trace('MobileData.init failed: $e');
 		}
 
 		if (FlxG.save.data.weekCompleted != null)

@@ -77,9 +77,9 @@ class Main extends Sprite
 
 		// Credits to MAJigsaw77 (he's the og author for this code)
 		#if android
-		Sys.setCwd(Path.addTrailingSlash(Context.getExternalFilesDir()));
+		try Sys.setCwd(Path.addTrailingSlash(Context.getExternalFilesDir())) catch(e) trace('SetCwd android failed: $e');
 		#elseif ios
-		Sys.setCwd(mobile.backend.StorageUtil.getStorageDirectory());
+		try Sys.setCwd(mobile.backend.StorageUtil.getStorageDirectory()) catch(e) trace('SetCwd ios failed: $e');
 		#end
 		#if VIDEOS_ALLOWED
 		hxvlc.util.Handle.init(#if (hxvlc >= "1.8.0")  ['--no-lua'] #end);

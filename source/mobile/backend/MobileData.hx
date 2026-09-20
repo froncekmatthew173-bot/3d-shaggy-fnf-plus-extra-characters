@@ -105,24 +105,23 @@ class MobileData
 
 	public static function setButtonsColors(buttonsInstance:Dynamic):Dynamic
 	{
-		// Dynamic Controls Color
-		var data:Dynamic;
-		if (true)
-			data = ClientPrefs.data;
-		else
-			data = ClientPrefs.defaultData;
-
-		for (i => button in [
-			buttonsInstance.buttonLeft,
-			buttonsInstance.buttonDown,
-			buttonsInstance.buttonUp,
-			buttonsInstance.buttonRight])
-		{
-			button.color = data.arrowRGB[i][0];
-			button.label.color = data.arrowRGB[i][0];
-			button.label.updateColorTransform();
-		}
-
+		// Dynamic Controls Color - FIX: guard against null ClientPrefs on mobile cold start
+		try {
+			var data:Dynamic = ClientPrefs.data != null ? ClientPrefs.data : ClientPrefs.defaultData;
+			if (data == null || data.arrowRGB == null) return buttonsInstance;
+			for (i => button in [
+				buttonsInstance.buttonLeft,
+				buttonsInstance.buttonDown,
+				buttonsInstance.buttonUp,
+				buttonsInstance.buttonRight])
+			{
+				if (button == null || button.label == null) continue;
+				if (data.arrowRGB[i] == null) continue;
+				button.color = data.arrowRGB[i][0];
+				button.label.color = data.arrowRGB[i][0];
+				button.label.updateColorTransform();
+			}
+		} catch(e) trace('setButtonsColors failed: $e');
 		return buttonsInstance;
 	}
 
@@ -130,18 +129,64 @@ class MobileData
 	{
 		folder = folder.contains(':') ? folder.split(':')[1] : folder;
 
-		#if MODS_ALLOWED if (FileSystem.exists(folder)) #end
-		for (file in FileSystem.readDirectory(folder))
-		{
-			var fileWithNoLib:String = file.contains(':') ? file.split(':')[1] : file;
-			if (Path.extension(fileWithNoLib) == 'json')
+		// FIX: On Android/iOS assets are inside APK/IPA, not on FileSystem. Original code would crash or leave maps empty on mobile, causing instant close.
+		// Wrap FileSystem access in try/catch and fallback to Assets listing.
+		var files:Array<String> = null;
+		try {
+			#if MODS_ALLOWED
+			if (FileSystem.exists(folder)) files = FileSystem.readDirectory(folder);
+			else files = [];
+			#else
+			files = FileSystem.readDirectory(folder);
+			#end
+		} catch(e) {
+			trace('MobileData.readDirectory FileSystem failed for $folder: $e, falling back to Assets');
+			files = [];
+		}
+
+		// If FileSystem found files, process them
+		if (files != null && files.length > 0) {
+			for (file in files)
 			{
-				file = Path.join([folder, Path.withoutDirectory(file)]);
-				var str = #if MODS_ALLOWED File.getContent(file) #else Assets.getText(file) #end;
-				var json:TouchButtonsData = cast Json.parse(str);
-				var mapKey:String = Path.withoutDirectory(Path.withoutExtension(fileWithNoLib));
-				map.set(mapKey, json);
+				var fileWithNoLib:String = file.contains(':') ? file.split(':')[1] : file;
+				if (Path.extension(fileWithNoLib) == 'json')
+				{
+					file = Path.join([folder, Path.withoutDirectory(file)]);
+					try {
+						var str = #if MODS_ALLOWED File.getContent(file) #else Assets.getText(file) #end;
+						var json:TouchButtonsData = cast Json.parse(str);
+						var mapKey:String = Path.withoutDirectory(Path.withoutExtension(fileWithNoLib));
+						map.set(mapKey, json);
+					} catch(e) trace('Failed to load $file: $e');
+				}
 			}
+			return;
+		}
+
+		// Fallback: enumerate via OpenFL Assets (works on mobile where files are embedded)
+		try {
+			var assetList:Array<String> = Assets.list(TEXT);
+			if (assetList == null) assetList = OpenFlAssets.list(TEXT);
+			for (assetPath in assetList) {
+				// asset paths are like "assets/shared/mobile/DPadModes/LEFT_FULL.json"
+				if (assetPath.indexOf(folder) == -1) continue;
+				if (Path.extension(assetPath) != 'json') continue;
+				try {
+					var str = Assets.getText(assetPath);
+					if (str == null) str = OpenFlAssets.getText(assetPath);
+					if (str == null) continue;
+					var json:TouchButtonsData = cast Json.parse(str);
+					var mapKey:String = Path.withoutDirectory(Path.withoutExtension(assetPath));
+					if (!map.exists(mapKey)) map.set(mapKey, json);
+				} catch(e) trace('Failed to load asset $assetPath: $e');
+			}
+		} catch(e) {
+			trace('MobileData.readDirectory Assets fallback failed for $folder: $e');
+		}
+
+		// Last resort: if still empty, try direct known files via Assets.exists
+		if (!map.keys().hasNext()) {
+			trace('Warning: MobileData.readDirectory found no files for $folder via FileSystem or Assets');
 		}
 	}
 

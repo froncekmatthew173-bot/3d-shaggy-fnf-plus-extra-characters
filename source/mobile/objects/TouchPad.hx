@@ -136,9 +136,9 @@ class TouchPad extends MobileInputManager implements IMobileControls
 			case NONE: // nothing
 		}
 
-		alpha = ClientPrefs.data.controlsAlpha;
+		alpha = (ClientPrefs.data != null && ClientPrefs.data.controlsAlpha != null) ? ClientPrefs.data.controlsAlpha : 0.6;
 		scrollFactor.set();
-		updateTrackedButtons();
+		try updateTrackedButtons() catch(e) trace('TouchPad updateTrackedButtons failed: $e');
 
 		instance = this;
 	}
