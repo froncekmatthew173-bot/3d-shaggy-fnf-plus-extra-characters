@@ -166,14 +166,12 @@ class MobileData
 		// Fallback: enumerate via OpenFL Assets (works on mobile where files are embedded)
 		try {
 			var assetList:Array<String> = Assets.list(TEXT);
-			if (assetList == null) assetList = OpenFlAssets.list(TEXT);
 			for (assetPath in assetList) {
 				// asset paths are like "assets/shared/mobile/DPadModes/LEFT_FULL.json"
 				if (assetPath.indexOf(folder) == -1) continue;
 				if (Path.extension(assetPath) != 'json') continue;
 				try {
 					var str = Assets.getText(assetPath);
-					if (str == null) str = OpenFlAssets.getText(assetPath);
 					if (str == null) continue;
 					var json:TouchButtonsData = cast Json.parse(str);
 					var mapKey:String = Path.withoutDirectory(Path.withoutExtension(assetPath));
