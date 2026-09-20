@@ -4,7 +4,7 @@ local threeDCharacters = {
     ['shaggy-3d'] = '3d',
     ['shaggy-god'] = '3d',
     ['bf'] = '3d2',
-    ['bf2'] = '3d3',
+    ['bf2'] = '3d2',
     ['eevee'] = '3d2'
 }
 
