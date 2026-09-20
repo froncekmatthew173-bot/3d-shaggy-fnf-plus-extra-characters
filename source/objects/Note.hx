@@ -517,7 +517,8 @@ class Note extends FlxSprite
 	public static function isPixelCharacter(name:String):Bool {
 		if(name==null) return false;
 		var n = name.toLowerCase();
-		return n.contains('pixel') || n=='senpai' || n=='senpai-angry' || n=='spirit';
+		return n.contains('pixel') || n=='senpai' || n=='senpai-angry' || n=='spirit'
+			|| n=='flareon' || n=='jolteon' || n=='eevee' || n=='eevee2' || n=='eevee-pixel';
 	}
 	public static function shouldUsePixelNotes(?mustPress:Null<Bool>=null):Bool {
 		if(PlayState.isPixelStage) return true;
