@@ -120,7 +120,7 @@ class StrumNote extends FlxSprite
 			}
 			setGraphicSize(Std.int(width * Note.getKeyScale(keyCount)));
 
-			if(Note.is3DNoteTexture(texture))
+			if(Note.is3DAnimTexture(texture))
 			{
 				var letters:Array<String> = Note.getProfileForTexture(texture, keyCount);
 				var key:String = letters[Std.int(Math.abs(noteData)) % letters.length];

@@ -507,11 +507,15 @@ class Note extends FlxSprite
 	}
 
 	public static function is3DNoteTexture(texture:String):Bool
+		return texture != null && texture.toLowerCase() == '3d';
+
+	// For animations/profile, any 3d variant (3d, 3d2, 3d3 etc) should keep 3d animations
+	public static function is3DAnimTexture(texture:String):Bool
 		return texture != null && texture.toLowerCase().contains('3d');
 
 	public static function getProfileForTexture(texture:String, ?keyCount:Int = 4):Array<String>
 	{
-		if(!is3DNoteTexture(texture))
+		if(!is3DAnimTexture(texture))
 			return get2DProfile(keyCount);
 
 		return get3DProfile(keyCount);
