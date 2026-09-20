@@ -412,14 +412,34 @@ class Note extends FlxSprite
 			noteSplashData.useRGBShader = false;
 		}
 
-		if(shouldUsePixelNotes(mustPress)) {
-			if(isSustainNote) {
-				var graphic = Paths.image('pixelUI/' + skinPixel + 'ENDS' + skinPostfix);
-				loadGraphic(graphic, true, Math.floor(graphic.width / 4), Math.floor(graphic.height / 2));
-				originalHeight = graphic.height / 2;
-			} else {
-				var graphic = Paths.image('pixelUI/' + skinPixel + skinPostfix);
-				loadGraphic(graphic, true, Math.floor(graphic.width / 4), Math.floor(graphic.height / 5));
+		// 3d textures take priority over pixel - pixel 3d notes don't have pixelUI graphics (would be missing texture squares)
+		if(shouldUsePixelNotes(mustPress) && !is3DAnimTexture(loadedTexture)) {
+			var pixelSkin = skinPixel;
+			var pixelPath = 'pixelUI/' + pixelSkin + (isSustainNote ? 'ENDS' : '') + skinPostfix;
+			if(!Paths.fileExists('images/' + pixelPath + '.png', IMAGE)) {
+				// fallback to default pixel NOTE_assets if char-specific pixel skin missing
+				pixelSkin = 'NOTE_assets';
+				pixelPath = 'pixelUI/' + pixelSkin + (isSustainNote ? 'ENDS' : '') + skinPostfix;
+				if(!Paths.fileExists('images/' + pixelPath + '.png', IMAGE)) pixelPath = 'pixelUI/NOTE_assets' + (isSustainNote ? 'ENDS' : '');
+			}
+			try {
+				if(isSustainNote) {
+					var graphic = Paths.image(pixelPath);
+					loadGraphic(graphic, true, Math.floor(graphic.width / 4), Math.floor(graphic.height / 2));
+					originalHeight = graphic.height / 2;
+				} else {
+					var graphic = Paths.image(pixelPath);
+					loadGraphic(graphic, true, Math.floor(graphic.width / 4), Math.floor(graphic.height / 5));
+				}
+			} catch(e) {
+				trace('Pixel note load failed for $pixelPath: $e, falling back to sparrow');
+				frames = Paths.getSparrowAtlas(skin);
+				loadNoteAnims();
+				if(is3DNoteTexture(loadedTexture)) antialiasing = false;
+				if(!isSustainNote) { centerOffsets(); centerOrigin(); }
+				updateHitbox();
+				if(animName != null && animation.exists(animName)) animation.play(animName, true);
+				return;
 			}
 			setGraphicSize(Std.int(width * PlayState.daPixelZoom));
 			loadPixelNoteAnims();

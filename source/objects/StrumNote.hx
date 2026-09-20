@@ -71,12 +71,19 @@ class StrumNote extends FlxSprite
 		var lastAnim:String = null;
 		if(animation.curAnim != null) lastAnim = animation.curAnim.name;
 
-		if(Note.shouldUsePixelNotes(player==1))
+		// pixel strums also: 3d textures take priority (no pixelUI for 3d)
+		if(Note.shouldUsePixelNotes(player==1) && !Note.is3DAnimTexture(texture))
 		{
-			loadGraphic(Paths.image('pixelUI/' + texture));
+			var pixelTex = texture;
+			if(!Paths.fileExists('images/pixelUI/' + pixelTex + '.png', IMAGE)) pixelTex = 'NOTE_assets';
+			try {
+				loadGraphic(Paths.image('pixelUI/' + pixelTex));
+			} catch(e) { pixelTex = 'NOTE_assets'; loadGraphic(Paths.image('pixelUI/' + pixelTex)); }
 			width = width / 4;
 			height = height / 5;
-			loadGraphic(Paths.image('pixelUI/' + texture), true, Math.floor(width), Math.floor(height));
+			try {
+				loadGraphic(Paths.image('pixelUI/' + pixelTex), true, Math.floor(width), Math.floor(height));
+			} catch(e) { loadGraphic(Paths.image('pixelUI/NOTE_assets'), true, Math.floor(Paths.image('pixelUI/NOTE_assets').width / 4), Math.floor(Paths.image('pixelUI/NOTE_assets').height / 5)); }
 
 			antialiasing = false;
 			setGraphicSize(Std.int(width * PlayState.daPixelZoom));
