@@ -164,20 +164,38 @@ class MobileData
 			return;
 		}
 
-		// Fallback: enumerate via OpenFL Assets (works on mobile where files are embedded)
+		// Fallback: enumerate via OpenFL Assets (works on mobile where files are embedded) - try both TEXT and BINARY for iOS/Android
 		try {
-			var assetList:Array<String> = Assets.list(AssetType.TEXT);
-			for (assetPath in assetList) {
-				// asset paths are like "assets/shared/mobile/DPadModes/LEFT_FULL.json"
-				if (assetPath.indexOf(folder) == -1) continue;
-				if (Path.extension(assetPath) != 'json') continue;
-				try {
-					var str = Assets.getText(assetPath);
-					if (str == null) continue;
-					var json:TouchButtonsData = cast Json.parse(str);
-					var mapKey:String = Path.withoutDirectory(Path.withoutExtension(assetPath));
-					if (!map.exists(mapKey)) map.set(mapKey, json);
-				} catch(e) trace('Failed to load asset $assetPath: $e');
+			var assetLists:Array<Array<String>> = [];
+			try assetLists.push(Assets.list(AssetType.TEXT)) catch(e) {}
+			try assetLists.push(Assets.list(AssetType.BINARY)) catch(e) {}
+			// also try unfiltered list
+			try {
+				var all = Assets.list(null);
+				if (all != null) assetLists.push(all);
+			} catch(e) {}
+			var seen = new Map<String, Bool>();
+			for (assetList in assetLists) {
+				if (assetList == null) continue;
+				for (assetPath in assetList) {
+					if (seen.exists(assetPath)) continue;
+					seen.set(assetPath, true);
+					// asset paths are like "assets/shared/mobile/DPadModes/LEFT_FULL.json"
+					if (assetPath.indexOf(folder) == -1 && assetPath.indexOf('mobile') == -1) continue;
+					if (Path.extension(assetPath) != 'json') continue;
+					if (assetPath.indexOf('DPadModes') == -1 && assetPath.indexOf('ActionModes') == -1) continue;
+					// Ensure folder match
+					var wantDPad = folder.indexOf('DPadModes') != -1;
+					var isDPad = assetPath.indexOf('DPadModes') != -1;
+					if (wantDPad != isDPad) continue;
+					try {
+						var str = Assets.getText(assetPath);
+						if (str == null) continue;
+						var json:TouchButtonsData = cast Json.parse(str);
+						var mapKey:String = Path.withoutDirectory(Path.withoutExtension(assetPath));
+						if (!map.exists(mapKey)) map.set(mapKey, json);
+					} catch(e) trace('Failed to load asset $assetPath: $e');
+				}
 			}
 		} catch(e) {
 			trace('MobileData.readDirectory Assets fallback failed for $folder: $e');
