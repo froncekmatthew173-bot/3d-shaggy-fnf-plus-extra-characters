@@ -1,0 +1,125 @@
+{
+	"animations": [
+		{
+			"offsets": [0, 0],
+			"loop": false,
+			"fps": 24,
+			"anim": "idle",
+			"indices": [],
+			"name": "dave idle"
+		},
+		{
+			"offsets": [5, -6],
+			"loop": false,
+			"fps": 24,
+			"anim": "singLEFT",
+			"indices": [],
+			"name": "dave left"
+		},
+		{
+			"offsets": [-20, -51],
+			"loop": false,
+			"fps": 24,
+			"anim": "singDOWN",
+			"indices": [],
+			"name": "dave down"
+		},
+		{
+			"offsets": [-46, 27],
+			"loop": false,
+			"fps": 24,
+			"anim": "singUP",
+			"indices": [],
+			"name": "dave up"
+		},
+		{
+			"offsets": [-48, -7],
+			"loop": false,
+			"fps": 24,
+			"anim": "singRIGHT",
+			"indices": [],
+			"name": "dave right"
+		},
+		{
+			"offsets": [7, 19],
+			"loop": false,
+			"fps": 24,
+			"anim": "singLEFTmiss",
+			"indices": [],
+			"name": "dave left miss"
+		},
+		{
+			"offsets": [-15, -19],
+			"loop": false,
+			"fps": 24,
+			"anim": "singDOWNmiss",
+			"indices": [],
+			"name": "dave down miss"
+		},
+		{
+			"offsets": [-46, 27],
+			"loop": false,
+			"fps": 24,
+			"anim": "singUPmiss",
+			"indices": [],
+			"name": "dave up miss"
+		},
+		{
+			"offsets": [-44, 22],
+			"loop": false,
+			"fps": 24,
+			"anim": "singRIGHTmiss",
+			"indices": [],
+			"name": "dave right miss"
+		},
+		{
+			"offsets": [0, 0],
+			"loop": false,
+			"fps": 24,
+			"anim": "hey",
+			"indices": [],
+			"name": "dave hey"
+		},
+		{
+			"offsets": [0, 0],
+			"loop": true,
+			"fps": 24,
+			"anim": "danceLeft",
+			"indices": [],
+			"name": "dave dance left"
+		},
+		{
+			"offsets": [0, 0],
+			"loop": true,
+			"fps": 24,
+			"anim": "danceRight",
+			"indices": [],
+			"name": "dave dance right"
+		},
+		{
+			"offsets": [0, 0],
+			"loop": false,
+			"fps": 24,
+			"anim": "gameoverstart",
+			"indices": [],
+			"name": "davegameoverstart"
+		},
+		{
+			"offsets": [0, 0],
+			"loop": true,
+			"fps": 24,
+			"anim": "gameoverend",
+			"indices": [],
+			"name": "davegameoverend"
+		}
+	],
+	"no_antialiasing": false,
+	"image": "characters/dave/dave_sheet",
+	"position": [0, 350],
+	"healthicon": "dave",
+	"flip_x": false,
+	"healthbar_colors": [100, 100, 255],
+	"camera_position": [0, 0],
+	"sing_duration": 4,
+	"scale": 1
+}

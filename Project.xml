@@ -203,10 +203,6 @@
 
 	<!-- SWFLite: generate from SWF for vector sprites (dave_sheet) -->
 	<library path="assets/shared/images/characters/dave/dave_sheet.swf" preload="true" generate="true" />
-	<!-- uncomment when you have published 3d.swf from 3d.fla:
-	<library path="assets/shared/images/3d.swf" preload="true" generate="true" />
-	<library path="assets/shared/images/3d2.swf" preload="true" generate="true" />
-	-->
 
 	<assets path='art/icons/iconOG.png' rename='icon.png' if="linux || mac" />
 	
